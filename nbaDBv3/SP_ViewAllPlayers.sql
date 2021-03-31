@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE ViewAllPlayers @PageNumber INT, @RowsOfPage INT, @SortingCol VARCHAR(100) ='PLAYER_NAME', @SortType AS VARCHAR(100) = 'DESC'
+﻿CREATE PROCEDURE ViewAllPlayers @PageNumber INT, @RowsOfPage INT, @SortingCol VARCHAR(100) ='LASTNAME', @SortType AS VARCHAR(100) = 'DESC'
 AS
 BEGIN
 	SET @PageNumber=1
