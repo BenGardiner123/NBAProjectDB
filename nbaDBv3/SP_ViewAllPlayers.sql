@@ -54,8 +54,16 @@ SELECT * FROM allPlayers
 	CASE WHEN @SortingCol = 'PF' AND @SortType ='ASC' THEN PF END ,
 	CASE WHEN @SortingCol = 'PF' AND @SortType ='DESC' THEN PF END DESC,
 	CASE WHEN @SortingCol = 'PFD' AND @SortType ='ASC' THEN PFD END ,
-	CASE WHEN @SortingCol = 'PFD' AND @SortType ='DESC' THEN PFD END DESC
-	
+	CASE WHEN @SortingCol = 'PFD' AND @SortType ='DESC' THEN PFD END DESC,
+	CASE WHEN @SortingCol = 'REB' AND @SortType ='ASC' THEN REB END ,
+	CASE WHEN @SortingCol = 'REB' AND @SortType ='DESC' THEN REB END DESC,
+	CASE WHEN @SortingCol = 'TOV' AND @SortType ='ASC' THEN TOV END ,
+	CASE WHEN @SortingCol = 'TOV' AND @SortType ='DESC' THEN TOV END DESC,
+	CASE WHEN @SortingCol = 'STL' AND @SortType ='ASC' THEN STL END ,
+	CASE WHEN @SortingCol = 'STL' AND @SortType ='DESC' THEN STL END DESC,
+	CASE WHEN @SortingCol = 'PTS' AND @SortType ='ASC' THEN PTS END ,
+	CASE WHEN @SortingCol = 'PTS' AND @SortType ='DESC' THEN PTS END DESC
+
 	OFFSET (@PageNumber-1)*@RowsOfPage ROWS
 	FETCH NEXT @RowsOfPage ROWS ONLY
 	END
