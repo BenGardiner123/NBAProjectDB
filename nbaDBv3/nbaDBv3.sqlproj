@@ -9,8 +9,7 @@
     <ProjectGuid>{3e37dbdb-6e83-413f-b1cf-71a15561070a}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>nbaDBv3</RootNamespace>
     <AssemblyName>nbaDBv3</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
@@ -48,7 +47,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -67,5 +65,7 @@
   <ItemGroup>
     <None Include="nbaDBv3.publish.xml" />
     <None Include="addPlayerData.sql" />
+    <None Include="AlternateAllPlayersView.sql" />
+    <None Include="queryScratchpad.sql" />
   </ItemGroup>
 </Project>
