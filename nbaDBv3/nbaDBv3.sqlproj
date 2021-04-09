@@ -65,7 +65,7 @@
   <ItemGroup>
     <None Include="nbaDBv3.publish.xml" />
     <None Include="addPlayerData.sql" />
-    <None Include="AlternateAllPlayersView.sql" />
+    <None Include="altAllPlayers.sql" />
     <None Include="queryScratchpad.sql" />
   </ItemGroup>
 </Project>
