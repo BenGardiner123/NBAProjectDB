@@ -3,8 +3,6 @@ Select a.*
 from
 (
 Select
-SEASON,
-player_id, 
 FIRSTNAME, 
 Lastname, 
 MAX(Player.SEASON) OVER (PARTITION BY player_id) as max_year,
