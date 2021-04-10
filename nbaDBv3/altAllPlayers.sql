@@ -1,8 +1,37 @@
 ﻿CREATE VIEW [dbo].[altAllPlayers] as 
-Select a.*
+Select a.FIRSTNAME, 
+a.LASTNAME,
+a.AGE, 
+a.GP, 
+a.MINS, 
+a.PLUS_MINUS, 
+a.AST, 
+a.BLK, 
+a.BLKA, 
+a.OREB, 
+a.DREB, 
+a.FG_PCT, 
+a.FG3_PCT, 
+a.FG3A, 
+a.FG3M, 
+a.FGA, 
+a.FGM, 
+a.FT_PCT, 
+a.FTA, 
+a.FTM, 
+a.W, 
+a.L, 
+a.W_PCT, 
+a.PF, 
+a.PFD, 
+a.REB, 
+a.TOV, 
+a.STL, 
+a.PTS
 from
 (
 Select
+SEASON,
 FIRSTNAME, 
 Lastname, 
 MAX(Player.SEASON) OVER (PARTITION BY player_id) as max_year,
