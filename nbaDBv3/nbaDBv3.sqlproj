@@ -67,5 +67,6 @@
     <None Include="addPlayerData.sql" />
     <None Include="altAllPlayers.sql" />
     <None Include="queryScratchpad.sql" />
+    <None Include="columnHeaderViews.sql" />
   </ItemGroup>
 </Project>
