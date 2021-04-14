@@ -1,8 +1,7 @@
-﻿CREATE PROCEDURE ViewAllPlayers @PageNumber INT, @RowsOfPage INT, @SortingCol VARCHAR(100) ='LASTNAME', @SortType AS VARCHAR(100) = 'DESC'
+﻿CREATE PROCEDURE ViewAllPlayers @SortingCol VARCHAR(100) ='FIRSTNAME', @SortType AS VARCHAR(100) = 'ASC'
 AS
 BEGIN
-	SET @PageNumber=1
-	SET @RowsOfPage=100
+
 SELECT * FROM allPlayers
 	ORDER BY 
 	CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='ASC' THEN FIRSTNAME END ,
@@ -64,6 +63,5 @@ SELECT * FROM allPlayers
 	CASE WHEN @SortingCol = 'PTS' AND @SortType ='ASC' THEN PTS END ,
 	CASE WHEN @SortingCol = 'PTS' AND @SortType ='DESC' THEN PTS END DESC
 
-	OFFSET (@PageNumber-1)*@RowsOfPage ROWS
-	FETCH NEXT @RowsOfPage ROWS ONLY
+	
 	END
