@@ -60,7 +60,7 @@
     <Build Include="Team.sql" />
     <Build Include="PlayerSelection.sql" />
     <Build Include="allPlayers.sql" />
-    <Build Include="SP_ViewAllPlayers.sql" />
+    <Build Include="ViewAllPlayers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nbaDBv3.publish.xml" />
