@@ -61,6 +61,7 @@
     <Build Include="PlayerSelection.sql" />
     <Build Include="allPlayers.sql" />
     <Build Include="ViewAllPlayers.sql" />
+    <Build Include="addPlayerToTeam.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nbaDBv3.publish.xml" />

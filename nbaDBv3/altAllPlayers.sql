@@ -1,5 +1,8 @@
 ﻿CREATE VIEW [dbo].[altAllPlayers] as 
-Select a.FIRSTNAME, 
+Select 
+a.SEASON,
+a.PLAYER_ID,
+a.FIRSTNAME, 
 a.LASTNAME,
 a.AGE, 
 a.GP, 
@@ -32,6 +35,7 @@ from
 (
 Select
 SEASON,
+PLAYER_ID,
 FIRSTNAME, 
 Lastname, 
 MAX(Player.SEASON) OVER (PARTITION BY player_id) as max_year,
