@@ -2,22 +2,28 @@
 CREATE PROCEDURE [dbo].[addPlayerToTeam]
 	@player_key int,
 	@teamName nvarchar(50) 
+
 AS
+
+--DO WE NEED SOME KIND OF COUNT THAT THE API CAN FETCH TO VALIFDATE BEFOREHAND?
+--IF NOT DOES THIS NEED SOME KIND OF ROLLBACK?
+
 BEGIN
   
     BEGIN TRY
-        insert into PlayerSelection(TeamName, Player_key)
-        Select @teamName, @player_key
+        DECLARE @TOTAL_PLAYERS INT = 15
+        IF @TOTAL_PLAYERS < (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
+            insert into PlayerSelection(TeamName, Player_key)
+            Select @teamName, @player_key
+        IF @TOTAL_PLAYERS >= (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
+            THROW 0001, 'MAX PLAYER AMOUNT PER TEAM REACHED', 1
     END TRY
 
     BEGIN CATCH
-      SELECT
-        ERROR_NUMBER() AS ErrorNumber,
-        ERROR_STATE() AS ErrorState,
-        ERROR_SEVERITY() AS ErrorSeverity,
-        ERROR_PROCEDURE() AS ErrorProcedure,
-        ERROR_LINE() AS ErrorLine,
-        ERROR_MESSAGE() AS ErrorMessage;
+
+        IF ERROR_NUMBER() IN (0001) 
+            THROW
+   
     END CATCH;
 END;
 
