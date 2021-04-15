@@ -11,6 +11,8 @@ AS
 BEGIN
   
     BEGIN TRY
+        --need to add the option here if the player_key is null then return the list of players in the team.
+
         DECLARE @TOTAL_PLAYERS INT = 15
         IF @TOTAL_PLAYERS < (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
             insert into PlayerSelection(TeamName, Player_key)
