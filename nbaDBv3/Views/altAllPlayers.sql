@@ -1,7 +1,6 @@
 ﻿CREATE VIEW [dbo].[altAllPlayers] as 
 Select 
-a.SEASON,
-a.PLAYER_ID,
+a.player_key,
 a.FIRSTNAME, 
 a.LASTNAME,
 a.AGE, 
@@ -34,6 +33,7 @@ a.PTS
 from
 (
 Select
+Player_key,
 SEASON,
 PLAYER_ID,
 FIRSTNAME, 

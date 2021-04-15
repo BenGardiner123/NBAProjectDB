@@ -14,15 +14,16 @@ drop table if exists PlayerSelection;
 drop table if exists Team;
 drop table if exists Player;
 
+drop view if exists columnHeaders;
 drop view if exists allPlayers;
 drop view if exists altAllPlayers; 
-drop view if exists columnHeaderViews;
 
 drop procedure if exists addPlayerToTeam;
 drop procedure if exists ViewAllPlayers;
 
 CREATE TABLE Player(
-   SEASON            INTEGER  NOT NULL 
+   Player_key        INT IDENTITY(1,1)	
+  ,SEASON            INTEGER  NOT NULL 
   ,PLAYER_ID         INTEGER  NOT NULL
   ,PLAYER_NAME       VARCHAR(30) NOT NULL
   ,FIRSTNAME         VARCHAR(30) NOT NULL
@@ -56,7 +57,7 @@ CREATE TABLE Player(
   ,PTS               NUMERIC(4,1) NOT NULL
   ,PLUS_MINUS        NUMERIC(5,1) NOT NULL
   ,NBA_FANTASY_PTS   NUMERIC(4,1) NOT NULL
-  primary key ([SEASON], player_id)
+  primary key (Player_key)
 );
 
 go
@@ -71,12 +72,11 @@ go
 
 CREATE TABLE [dbo].[PlayerSelection]
 (
-	[TeamName]          NVARCHAR(50)   Not Null, 
-    [Season]            INT            NOT NULL,
-    [PLAYER_ID]         INT            NOT NULL,
-    primary key (TeamName, Season, Player_Id),
+	[TeamName]          NVARCHAR(50)   Not Null  CHECK (DATALENGTH(TeamName) > 0), 
+    [Player_key]        INT            NOT NULL  CHECK (DATALENGTH(Player_key) > 0),
+    primary key (TeamName, Player_key),
     Foreign key (TeamName) references Team,
-    Foreign key (Season, Player_ID) references Player
+    Foreign key (Player_key) references Player
 );
 
 go
@@ -2678,10 +2678,10 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 go
 
 CREATE VIEW [dbo].[allPlayers] as 
-select FIRSTNAME, LASTNAME ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
+select Player_key ,FIRSTNAME, LASTNAME ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
 FG3_PCT, FG3A, FG3M, FGA, FGM, FT_PCT, FTA, FTM, 
 W, L, W_PCT, PF, PFD, REB, TOV, STL, PTS
-from (select player_id, Season, FIRSTNAME, LASTNAME, TEAM_ABBREVIATION ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
+from (select Player_key, player_id, Season, FIRSTNAME, LASTNAME, TEAM_ABBREVIATION ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
 FG3_PCT, FG3A, FG3M, FGA, FGM, FT_PCT, FTA, FTM, 
 W, L, W_PCT, PF, PFD, REB, TOV, STL, PTS, RANK() over (PARTITION by PLAYER_ID order by season DESC) n
 from Player
@@ -2691,8 +2691,7 @@ go
 
 CREATE VIEW [dbo].[altAllPlayers] as 
 Select 
-a.SEASON,
-a.PLAYER_ID,
+a.player_key,
 a.FIRSTNAME, 
 a.LASTNAME,
 a.AGE, 
@@ -2725,6 +2724,7 @@ a.PTS
 from
 (
 Select
+Player_key,
 SEASON,
 PLAYER_ID,
 FIRSTNAME, 
@@ -2761,6 +2761,7 @@ from Player
 ) a
 where a.season = a.max_year 
 
+
 go
 
 CREATE VIEW [dbo].[columnHeaders] as
@@ -2768,22 +2769,20 @@ CREATE VIEW [dbo].[columnHeaders] as
 SELECT COLUMN_NAME
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE table_name = 'allPlayers'
-AND COLUMN_NAME != 'player_id';
+AND COLUMN_NAME != 'player_key';
 
 go
 
 
 CREATE PROCEDURE [dbo].[addPlayerToTeam]
-	@player_id int,
+	@player_key int,
 	@teamName nvarchar(50) 
 AS
 BEGIN
   
     BEGIN TRY
-        insert into PlayerSelection(TeamName, Season, PLAYER_ID)
-        Select @teamName, altAllPlayers.season, altAllPlayers.player_id
-        FROM altAllPlayers 
-        WHERE altAllPlayers.player_id = @player_id
+        insert into PlayerSelection(TeamName, Player_key)
+        Select @teamName, @player_key
     END TRY
 
     BEGIN CATCH
@@ -2796,6 +2795,7 @@ BEGIN
         ERROR_MESSAGE() AS ErrorMessage;
     END CATCH;
 END;
+
 
 GO
 

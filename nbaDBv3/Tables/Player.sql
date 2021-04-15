@@ -1,5 +1,6 @@
 ﻿CREATE TABLE Player(
-   SEASON            INTEGER  NOT NULL 
+   Player_key        INT IDENTITY(1,1)	
+  ,SEASON            INTEGER  NOT NULL 
   ,PLAYER_ID         INTEGER  NOT NULL
   ,PLAYER_NAME       VARCHAR(30) NOT NULL
   ,FIRSTNAME         VARCHAR(30) NOT NULL
@@ -33,5 +34,5 @@
   ,PTS               NUMERIC(4,1) NOT NULL
   ,PLUS_MINUS        NUMERIC(5,1) NOT NULL
   ,NBA_FANTASY_PTS   NUMERIC(4,1) NOT NULL
-  primary key ([SEASON], player_id)
+  primary key (Player_key)
 );

@@ -1,15 +1,13 @@
 ﻿
 CREATE PROCEDURE [dbo].[addPlayerToTeam]
-	@player_id int,
+	@player_key int,
 	@teamName nvarchar(50) 
 AS
 BEGIN
   
     BEGIN TRY
-        insert into PlayerSelection(TeamName, Season, PLAYER_ID)
-        Select @teamName, altAllPlayers.season, altAllPlayers.player_id
-        FROM altAllPlayers 
-        WHERE altAllPlayers.player_id = @player_id
+        insert into PlayerSelection(TeamName, Player_key)
+        Select @teamName, @player_key
     END TRY
 
     BEGIN CATCH
