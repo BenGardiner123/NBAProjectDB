@@ -63,7 +63,7 @@
   <ItemGroup>
     <Build Include="Tables\Player.sql" />
     <Build Include="StoredProcedures\ViewAllPlayers.sql" />
-    <Build Include="StoredProcedures\addPlayerToTeam.sql" />
+    <Build Include="StoredProcedures\getPlayersFromTeam.sql" />
     <Build Include="Views\allPlayers.sql" />
     <None Include="Views\altAllPlayers.sql" />
     <None Include="Views\columnHeaderViews.sql" />

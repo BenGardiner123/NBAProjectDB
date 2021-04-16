@@ -18,7 +18,7 @@ drop view if exists columnHeaders;
 drop view if exists allPlayers;
 drop view if exists altAllPlayers; 
 
-drop procedure if exists addPlayerToTeam;
+drop procedure if exists getPlayersFromTeam;
 drop procedure if exists ViewAllPlayers;
 
 CREATE TABLE Player(
@@ -2674,6 +2674,19 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1630192,'Zeke Nnaji','Zeke','Nnaji','DEN',20,31,22,9,0.71,10.5,1.4,2.6,0.524,0.6,1.5,0.413,0.4,0.5,0.8,0.4,1.3,1.7,0.2,0.2,0.1,0.1,0.2,0.7,0.4,3.8,-1.5,6.5);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1629627,'Zion Williamson','Zion','Williamson','NOP',20,43,20,23,0.465,32.8,10.1,16,0.628,0.2,0.5,0.348,6,8.5,0.709,2.6,4.5,7,3.5,2.6,0.9,0.7,2,2.3,5.8,26.3,1.2,42.2);
 
+go
+
+insert into Team values ('Chichago Bulls'),
+('Miami Heat');
+
+insert into PlayerSelection values 
+('Chichago Bulls', 9),
+('Chichago Bulls', 10),
+('Chichago Bulls', 11),
+('Chichago Bulls', 12),
+('Chichago Bulls', 13),
+('Chichago Bulls', 14),
+('Chichago Bulls', 15)
 
 go
 
@@ -2774,34 +2787,53 @@ AND COLUMN_NAME != 'player_key';
 go
 
 
-CREATE PROCEDURE [dbo].[addPlayerToTeam]
-	@player_key int,
+CREATE PROCEDURE [dbo].[getPlayersFromTeam]
 	@teamName nvarchar(50) 
 
 AS
 
 --DO WE NEED SOME KIND OF COUNT THAT THE API CAN FETCH TO VALIFDATE BEFOREHAND?
 --IF NOT DOES THIS NEED SOME KIND OF ROLLBACK?
+--need to add the option here if the player_key is null then return the list of players in the team.
+        --DECLARE @TOTAL_PLAYERS INT = 15
+        --IF @TOTAL_PLAYERS < (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
+        --IF @TOTAL_PLAYERS >= (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
+        --    THROW 0001, 'MAX PLAYER AMOUNT PER TEAM REACHED', 1
 
 BEGIN
   
     BEGIN TRY
-        DECLARE @TOTAL_PLAYERS INT = 15
-        IF @TOTAL_PLAYERS < (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
-            insert into PlayerSelection(TeamName, Player_key)
-            Select @teamName, @player_key
-        IF @TOTAL_PLAYERS >= (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
-            THROW 0001, 'MAX PLAYER AMOUNT PER TEAM REACHED', 1
+		IF NOT EXISTS
+            (
+                Select TeamName from PlayerSelection
+                Where TeamName = @teamName
+		    )
+                BEGIN
+		            RAISERROR('Team does not exist', 1, 1)
+	            END
+        ELSE
+            BEGIN
+                Select Player_key from PlayerSelection
+                Where TeamName = @teamName
+            END
     END TRY
 
     BEGIN CATCH
+        DECLARE @ErrorMessage NVARCHAR(4000);  
+        DECLARE @ErrorSeverity INT;  
+        DECLARE @ErrorState INT;  
+  
+        SELECT   
+            @ErrorMessage = ERROR_MESSAGE(),  
+            @ErrorSeverity = ERROR_SEVERITY(),  
+            @ErrorState = ERROR_STATE();  
 
-        IF ERROR_NUMBER() IN (0001) 
-            THROW
-   
+            RAISERROR  (@ErrorMessage, -- Message text.  
+                        @ErrorSeverity, -- Severity.  
+                        @ErrorState -- State.  
+                       );  
     END CATCH;
 END;
-
 
 GO
 
