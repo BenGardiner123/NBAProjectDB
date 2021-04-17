@@ -54,19 +54,30 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="StoredProcedures" />
+    <Folder Include="Tables" />
+    <Folder Include="Views" />
+    <Folder Include="PostDeploymentScript" />
+    <Folder Include="Data" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Player.sql" />
-    <Build Include="Team.sql" />
-    <Build Include="PlayerSelection.sql" />
-    <Build Include="allPlayers.sql" />
-    <Build Include="ViewAllPlayers.sql" />
+    <Build Include="Tables\Player.sql" />
+    <Build Include="StoredProcedures\ViewAllPlayers.sql" />
+    <Build Include="StoredProcedures\getPlayersFromTeam.sql" />
+    <Build Include="Views\allPlayers.sql" />
+    <None Include="Views\altAllPlayers.sql" />
+    <None Include="Views\columnHeaderViews.sql" />
+    <None Include="Data\addPlayerData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="nbaDBv3.publish.xml" />
-    <None Include="addPlayerData.sql" />
-    <None Include="altAllPlayers.sql" />
     <None Include="queryScratchpad.sql" />
-    <None Include="columnHeaderViews.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="Tables\PlayerSelection.sql" />
+    <Build Include="Tables\Team.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploymentScript\Script.PostDeployment1.sql" />
   </ItemGroup>
 </Project>
