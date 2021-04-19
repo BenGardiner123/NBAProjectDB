@@ -18,6 +18,7 @@ drop view if exists columnHeaders;
 drop view if exists allPlayers;
 drop view if exists altAllPlayers; 
 
+drop procedure if exists addPlayerToTeam;
 drop procedure if exists getPlayersFromTeam;
 drop procedure if exists ViewAllPlayers;
 
@@ -2676,20 +2677,6 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 
 go
 
-insert into Team values ('Chichago Bulls'),
-('Miami Heat');
-
-insert into PlayerSelection values 
-('Chichago Bulls', 9),
-('Chichago Bulls', 10),
-('Chichago Bulls', 11),
-('Chichago Bulls', 12),
-('Chichago Bulls', 13),
-('Chichago Bulls', 14),
-('Chichago Bulls', 15)
-
-go
-
 CREATE VIEW [dbo].[allPlayers] as 
 select Player_key ,FIRSTNAME, LASTNAME ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
 FG3_PCT, FG3A, FG3M, FGA, FGM, FT_PCT, FTA, FTM, 
@@ -2792,29 +2779,15 @@ CREATE PROCEDURE [dbo].[getPlayersFromTeam]
 
 AS
 
---DO WE NEED SOME KIND OF COUNT THAT THE API CAN FETCH TO VALIFDATE BEFOREHAND?
---IF NOT DOES THIS NEED SOME KIND OF ROLLBACK?
---need to add the option here if the player_key is null then return the list of players in the team.
-        --DECLARE @TOTAL_PLAYERS INT = 15
-        --IF @TOTAL_PLAYERS < (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
-        --IF @TOTAL_PLAYERS >= (select COUNT(Player_key) FROM PlayerSelection p where p.TeamName = @teamName)
-        --    THROW 0001, 'MAX PLAYER AMOUNT PER TEAM REACHED', 1
-
 BEGIN
   
     BEGIN TRY
-		IF NOT EXISTS
-            (
-                Select TeamName from PlayerSelection
-                Where TeamName = @teamName
-		    )
-                BEGIN
-		            RAISERROR('Team does not exist', 1, 1)
-	            END
-        ELSE
             BEGIN
-                Select Player_key from PlayerSelection
-                Where TeamName = @teamName
+				 select *
+                 from 
+                 allPlayers a
+                 where
+                 a.Player_key in (select p.Player_key from PlayerSelection p  where p.TeamName = @teamName )
             END
     END TRY
 
