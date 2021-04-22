@@ -2675,7 +2675,27 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1630192,'Zeke Nnaji','Zeke','Nnaji','DEN',20,31,22,9,0.71,10.5,1.4,2.6,0.524,0.6,1.5,0.413,0.4,0.5,0.8,0.4,1.3,1.7,0.2,0.2,0.1,0.1,0.2,0.7,0.4,3.8,-1.5,6.5);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1629627,'Zion Williamson','Zion','Williamson','NOP',20,43,20,23,0.465,32.8,10.1,16,0.628,0.2,0.5,0.348,6,8.5,0.709,2.6,4.5,7,3.5,2.6,0.9,0.7,2,2.3,5.8,26.3,1.2,42.2);
 
-go
+GO
+
+insert into Team (TeamName)values
+('Miami Heat'),
+('Chicago Bulls');
+
+GO
+
+insert into PlayerSelection (TeamName, Player_key) VALUES
+('Miami Heat' , 2065),
+('Miami Heat' , 1158),
+('Miami Heat' , 374),
+('Miami Heat' , 717),
+('Miami Heat' , 326),
+('Miami Heat' , 831),
+('Miami Heat' , 334),
+('Miami Heat' , 1774),
+('Miami Heat' , 2060),
+('Miami Heat' , 1433);
+
+GO
 
 CREATE VIEW [dbo].[allPlayers] as 
 select Player_key ,FIRSTNAME, LASTNAME ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
@@ -2775,7 +2795,7 @@ go
 
 
 CREATE PROCEDURE [dbo].[getPlayersFromTeam]
-	@teamName nvarchar(50) 
+	@teamName nvarchar(50), @SortingCol nvarchar(50), @SortType as nvarchar(5) = 'ASC'
 
 AS
 
@@ -2788,6 +2808,65 @@ BEGIN
                  allPlayers a
                  where
                  a.Player_key in (select p.Player_key from PlayerSelection p  where p.TeamName = @teamName )
+				 ORDER BY 
+					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='ASC' THEN FIRSTNAME END ,
+					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='DESC' THEN FIRSTNAME END DESC,
+					CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='ASC' THEN LASTNAME END ,
+					CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='DESC' THEN LASTNAME END DESC,
+					CASE WHEN @SortingCol = 'AGE' AND @SortType ='ASC' THEN AGE END ,
+					CASE WHEN @SortingCol = 'AGE' AND @SortType ='DESC' THEN AGE END DESC,
+					CASE WHEN @SortingCol = 'GP' AND @SortType ='ASC' THEN GP END ,
+					CASE WHEN @SortingCol = 'GP' AND @SortType ='DESC' THEN GP END DESC,
+					CASE WHEN @SortingCol = 'MINS' AND @SortType ='ASC' THEN MINS END ,
+					CASE WHEN @SortingCol = 'MINS' AND @SortType ='DESC' THEN MINS END DESC,
+					CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='ASC' THEN PLUS_MINUS END ,
+					CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='DESC' THEN PLUS_MINUS END DESC,
+					CASE WHEN @SortingCol = 'AST' AND @SortType ='ASC' THEN AST END ,
+					CASE WHEN @SortingCol = 'AST' AND @SortType ='DESC' THEN AST END DESC,
+					CASE WHEN @SortingCol = 'BLK' AND @SortType ='ASC' THEN BLK END ,
+					CASE WHEN @SortingCol = 'BLK' AND @SortType ='DESC' THEN BLK END DESC,
+					CASE WHEN @SortingCol = 'BLKA' AND @SortType ='ASC' THEN BLKA END ,
+					CASE WHEN @SortingCol = 'BLKA' AND @SortType ='DESC' THEN BLKA END DESC,
+					CASE WHEN @SortingCol = 'OREB' AND @SortType ='ASC' THEN OREB END ,
+					CASE WHEN @SortingCol = 'OREB' AND @SortType ='DESC' THEN OREB END DESC,
+					CASE WHEN @SortingCol = 'DREB' AND @SortType ='ASC' THEN DREB END ,
+					CASE WHEN @SortingCol = 'DREB' AND @SortType ='DESC' THEN DREB END DESC,
+					CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='ASC' THEN FG_PCT END ,
+					CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='DESC' THEN FG_PCT END DESC,
+					CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='ASC' THEN FG3_PCT END ,
+					CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='DESC' THEN FG3_PCT END DESC,
+					CASE WHEN @SortingCol = 'FG3A' AND @SortType ='ASC' THEN FG3A END ,
+					CASE WHEN @SortingCol = 'FG3A' AND @SortType ='DESC' THEN FG3A END DESC,
+					CASE WHEN @SortingCol = 'FG3M' AND @SortType ='ASC' THEN FG3M END ,
+					CASE WHEN @SortingCol = 'FG3M' AND @SortType ='DESC' THEN FG3M END DESC,
+					CASE WHEN @SortingCol = 'FGA' AND @SortType ='ASC' THEN FGA END ,
+					CASE WHEN @SortingCol = 'FGA' AND @SortType ='DESC' THEN FGA END DESC,
+					CASE WHEN @SortingCol = 'FGM' AND @SortType ='ASC' THEN FGM END ,
+					CASE WHEN @SortingCol = 'FGM' AND @SortType ='DESC' THEN FGM END DESC,
+					CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='ASC' THEN FT_PCT END ,
+					CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='DESC' THEN FT_PCT END DESC,
+					CASE WHEN @SortingCol = 'FTA' AND @SortType ='ASC' THEN FTA END ,
+					CASE WHEN @SortingCol = 'FTA' AND @SortType ='DESC' THEN FTA END DESC,
+					CASE WHEN @SortingCol = 'FTM' AND @SortType ='ASC' THEN FTM END ,
+					CASE WHEN @SortingCol = 'FTM' AND @SortType ='DESC' THEN FTM END DESC,
+					CASE WHEN @SortingCol = 'W' AND @SortType ='ASC' THEN W END ,
+					CASE WHEN @SortingCol = 'W' AND @SortType ='DESC' THEN W END DESC,
+					CASE WHEN @SortingCol = 'L' AND @SortType ='ASC' THEN L END ,
+					CASE WHEN @SortingCol = 'L' AND @SortType ='DESC' THEN L END DESC,
+					CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='ASC' THEN W_PCT END ,
+					CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='DESC' THEN W_PCT END DESC,
+					CASE WHEN @SortingCol = 'PF' AND @SortType ='ASC' THEN PF END ,
+					CASE WHEN @SortingCol = 'PF' AND @SortType ='DESC' THEN PF END DESC,
+					CASE WHEN @SortingCol = 'PFD' AND @SortType ='ASC' THEN PFD END ,
+					CASE WHEN @SortingCol = 'PFD' AND @SortType ='DESC' THEN PFD END DESC,
+					CASE WHEN @SortingCol = 'REB' AND @SortType ='ASC' THEN REB END ,
+					CASE WHEN @SortingCol = 'REB' AND @SortType ='DESC' THEN REB END DESC,
+					CASE WHEN @SortingCol = 'TOV' AND @SortType ='ASC' THEN TOV END ,
+					CASE WHEN @SortingCol = 'TOV' AND @SortType ='DESC' THEN TOV END DESC,
+					CASE WHEN @SortingCol = 'STL' AND @SortType ='ASC' THEN STL END ,
+					CASE WHEN @SortingCol = 'STL' AND @SortType ='DESC' THEN STL END DESC,
+					CASE WHEN @SortingCol = 'PTS' AND @SortType ='ASC' THEN PTS END ,
+					CASE WHEN @SortingCol = 'PTS' AND @SortType ='DESC' THEN PTS END DESC
             END
     END TRY
 
