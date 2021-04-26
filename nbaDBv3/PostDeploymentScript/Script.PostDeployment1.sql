@@ -13,6 +13,7 @@ Post-Deployment Script Template
 drop table if exists PlayerSelection;
 drop table if exists Team;
 drop table if exists Player;
+drop table if exists Users;
 
 drop view if exists columnHeaders;
 drop view if exists allPlayers;
@@ -78,6 +79,19 @@ CREATE TABLE [dbo].[PlayerSelection]
     primary key (TeamName, Player_key),
     Foreign key (TeamName) references Team,
     Foreign key (Player_key) references Player
+);
+
+go
+
+CREATE TABLE [dbo].[Users]
+(
+	ID INT IDENTITY(1,1)
+	, VARCHAR(30) FirstName
+	, VARCHAR(30) LastName
+	, VARCHAR(30) UserName
+	, BINARY PasswordHash
+	, BINARY PasswordSalt
+
 );
 
 go
