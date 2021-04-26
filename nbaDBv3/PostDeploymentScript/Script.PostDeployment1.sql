@@ -86,11 +86,11 @@ go
 CREATE TABLE [dbo].[Users]
 (
 	ID INT IDENTITY(1,1)
-	, VARCHAR(30) FirstName
-	, VARCHAR(30) LastName
-	, VARCHAR(30) UserName
-	, BINARY PasswordHash
-	, BINARY PasswordSalt
+	,FirstName VARCHAR(30) 
+	,LastName VARCHAR(30) 
+	,UserName VARCHAR(30) 
+	,PasswordHash BINARY 
+	,PasswordSalt BINARY 
 
 );
 
