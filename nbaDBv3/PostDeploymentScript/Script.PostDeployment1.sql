@@ -64,11 +64,28 @@ CREATE TABLE Player(
 
 go
 
+CREATE TABLE [dbo].[Users]
+(
+	--UserID INT IDENTITY(1,1),
+	 FirstName VARCHAR(30) 
+	,LastName VARCHAR(30) 
+	,UserName VARCHAR(30) 
+	,PasswordHash BINARY(64)
+	,PasswordSalt BINARY(64)
+	--primary key (UserID)
+
+);
+
+go
+
+
  CREATE TABLE [dbo].[Team]
 (
 	[TeamName] NVARCHAR(50) NOT NULL CHECK (DATALENGTH(TeamName) > 0), 
-	primary key (TeamName),
-)
+	--UserID INTEGER  NOT NULL,
+	primary key (TeamName)	
+	--,Foreign key (UserID) references Users
+);
 
 go
 
@@ -79,19 +96,6 @@ CREATE TABLE [dbo].[PlayerSelection]
     primary key (TeamName, Player_key),
     Foreign key (TeamName) references Team,
     Foreign key (Player_key) references Player
-);
-
-go
-
-CREATE TABLE [dbo].[Users]
-(
-	ID INT IDENTITY(1,1)
-	,FirstName VARCHAR(30) 
-	,LastName VARCHAR(30) 
-	,UserName VARCHAR(30) 
-	,PasswordHash BINARY 
-	,PasswordSalt BINARY 
-
 );
 
 go
