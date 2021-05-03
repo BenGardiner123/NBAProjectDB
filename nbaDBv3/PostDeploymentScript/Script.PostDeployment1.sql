@@ -66,13 +66,11 @@ go
 
 CREATE TABLE [dbo].[Users]
 (
-	--UserID INT IDENTITY(1,1),
-	 FirstName VARCHAR(30) 
-	,LastName VARCHAR(30) 
-	,UserName VARCHAR(30) 
-	,PasswordHash BINARY(64)
-	,PasswordSalt BINARY(64)
-	--primary key (UserID)
+	 UserID INT IDENTITY(1,1)
+	,UserName VARCHAR(30) NOT NULL CHECK (DATALENGTH(userName) > 0) 
+	,PasswordHash varbinary(max)
+	,PasswordSalt varbinary(max)
+	primary key (UserID)
 
 );
 
