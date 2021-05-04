@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Authentication-DB", "Authentication-DB\Authentication-DB.sqlproj", "{89619B3C-61D8-4B20-AA60-C7EA39492C59}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89619B3C-61D8-4B20-AA60-C7EA39492C59}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3202A183-3612-4D84-9C91-FC2A3A93E1FD}
+	EndGlobalSection
+EndGlobal
