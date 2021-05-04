@@ -2693,25 +2693,50 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1630192,'Zeke Nnaji','Zeke','Nnaji','DEN',20,31,22,9,0.71,10.5,1.4,2.6,0.524,0.6,1.5,0.413,0.4,0.5,0.8,0.4,1.3,1.7,0.2,0.2,0.1,0.1,0.2,0.7,0.4,3.8,-1.5,6.5);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1629627,'Zion Williamson','Zion','Williamson','NOP',20,43,20,23,0.465,32.8,10.1,16,0.628,0.2,0.5,0.348,6,8.5,0.709,2.6,4.5,7,3.5,2.6,0.9,0.7,2,2.3,5.8,26.3,1.2,42.2);
 
---GO
+GO
 
---insert into Team (TeamName, UserID)values
---('Miami Heat'),
---('Chicago Bulls');
+insert into Users (FirstName, LastName, UserName, PasswordHash, PasswordSalt) values
+('Checma', 'Tokens', null, null, null),
+('Scores', 'ontheBoard', null, null, null);
 
---GO
 
---insert into PlayerSelection (TeamName, Player_key) VALUES
---('Miami Heat' , 2065),
---('Miami Heat' , 1158),
---('Miami Heat' , 374),
---('Miami Heat' , 717),
---('Miami Heat' , 326),
---('Miami Heat' , 831),
---('Miami Heat' , 334),
---('Miami Heat' , 1774),
---('Miami Heat' , 2060),
---('Miami Heat' , 1433);
+insert into Team (TeamName, UserID)values
+('Miami Heat', 1),
+('Chicago Bulls', 2);
+
+GO
+
+insert into PlayerSelection (TeamName, UserID, Player_key) VALUES
+('Miami Heat', 1, 2065),
+('Miami Heat', 1, 1158),
+('Miami Heat', 1, 374),
+('Miami Heat', 1, 717),
+('Miami Heat', 1, 326),
+('Miami Heat', 1, 831),
+('Miami Heat', 1, 334),
+('Miami Heat', 1, 1774),
+('Miami Heat', 1, 2060),
+('Miami Heat', 1, 1433),
+('Miami Heat', 1, 1760),
+('Miami Heat', 1, 702),
+('Miami Heat', 1, 975),
+('Miami Heat', 1, 409),
+('Miami Heat', 1, 41),
+('Chicago Bulls', 2, 494),
+('Chicago Bulls', 2, 765),
+('Chicago Bulls', 2, 1760),
+('Chicago Bulls', 2, 409),
+('Chicago Bulls', 2, 326),
+('Chicago Bulls', 2, 41),
+('Chicago Bulls', 2, 51),
+('Chicago Bulls', 2, 1774),
+('Chicago Bulls', 2, 2060),
+('Chicago Bulls', 2, 2557),
+('Chicago Bulls', 2, 1093),
+('Chicago Bulls', 2, 702),
+('Chicago Bulls', 2, 975),
+('Chicago Bulls', 2, 831),
+('Chicago Bulls', 2, 2157);
 
 GO
 
