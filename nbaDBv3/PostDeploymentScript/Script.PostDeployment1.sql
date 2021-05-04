@@ -90,9 +90,9 @@ go
 
 CREATE TABLE [dbo].[PlayerSelection]
 (
-	[TeamName]  NVARCHAR(50)  Not Null  CHECK (DATALENGTH(TeamName) > 0),
+	[TeamName]  NVARCHAR(50),
     [UserID] INT,
-    [Player_key]  INT  NOT NULL  CHECK (DATALENGTH(Player_key) > 0),
+    [Player_key]  INT,
     primary key (TeamName,UserID,Player_key),
     Foreign key (TeamName, UserID) references Team,
     Foreign key (Player_key) references Player
