@@ -2633,7 +2633,6 @@ insert into Team (TeamName, UserID)values
 ('Miami Heat', 1),
 ('Chicago Bulls', 2);
 
-GO
 
 insert into PlayerSelection (TeamName, UserID, Player_key) VALUES
 ('Miami Heat', 1, 2065),
