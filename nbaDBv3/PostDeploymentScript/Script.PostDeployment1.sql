@@ -1,105 +1,27 @@
-﻿/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
+﻿----/*
+----Post-Deployment Script Template							
+------------------------------------------------------------------------------------------
+---- This file contains SQL statements that will be appended to the build script.		
+---- Use SQLCMD syntax to include a file in the post-deployment script.			
+---- Example:      :r .\myfile.sql								
+---- Use SQLCMD syntax to reference a variable in the post-deployment script.		
+---- Example:      :setvar TableName MyTable							
+----               SELECT * FROM [$(TableName)]					
+------------------------------------------------------------------------------------------
 
-drop table if exists PlayerSelection;
-drop table if exists Team;
-drop table if exists Player;
-drop table if exists Users;
+if '$(ClearDB)' = 'true' or '$(ReLoad_TestData)' = 'true'
+	begin
+		delete from PlayerSelection;
+		delete from Team;
+		delete from Player;
+		delete from Users;
+	end
 
-drop view if exists columnHeaders;
-drop view if exists allPlayers;
-drop view if exists altAllPlayers; 
+GO
 
-drop procedure if exists addPlayerToTeam;
-drop procedure if exists getPlayersFromTeam;
-drop procedure if exists ViewAllPlayers;
+if '$(ReLoad_TestData)' = 'true'
 
-CREATE TABLE Player(
-   Player_key        INT IDENTITY(1,1)	
-  ,SEASON            INTEGER  NOT NULL 
-  ,PLAYER_ID         INTEGER  NOT NULL
-  ,PLAYER_NAME       VARCHAR(30) NOT NULL
-  ,FIRSTNAME         VARCHAR(30) NOT NULL
-  ,LASTNAME          VARCHAR(30) NOT NULL
-  ,TEAM_ABBREVIATION VARCHAR(3) NOT NULL
-  ,AGE               INTEGER  NOT NULL
-  ,GP                INTEGER  NOT NULL
-  ,W                 INTEGER  NOT NULL
-  ,L                 INTEGER  NOT NULL
-  ,W_PCT             NUMERIC(5,3) NOT NULL
-  ,MINS              NUMERIC(4,1) NOT NULL
-  ,FGM               NUMERIC(4,1) NOT NULL
-  ,FGA               NUMERIC(4,1) NOT NULL
-  ,FG_PCT            NUMERIC(5,3) NOT NULL
-  ,FG3M              NUMERIC(3,1) NOT NULL
-  ,FG3A              NUMERIC(4,1) NOT NULL
-  ,FG3_PCT           NUMERIC(5,3) NOT NULL
-  ,FTM               NUMERIC(4,1) NOT NULL
-  ,FTA               NUMERIC(4,1) NOT NULL
-  ,FT_PCT            NUMERIC(5,3) NOT NULL
-  ,OREB              NUMERIC(3,1) NOT NULL
-  ,DREB              NUMERIC(4,1) NOT NULL
-  ,REB               NUMERIC(4,1) NOT NULL
-  ,AST               NUMERIC(4,1) NOT NULL
-  ,TOV               NUMERIC(3,1) NOT NULL
-  ,STL               NUMERIC(3,1) NOT NULL
-  ,BLK               NUMERIC(3,1) NOT NULL
-  ,BLKA              NUMERIC(3,1) NOT NULL
-  ,PF                NUMERIC(3,1) NOT NULL
-  ,PFD               NUMERIC(3,1) NOT NULL
-  ,PTS               NUMERIC(4,1) NOT NULL
-  ,PLUS_MINUS        NUMERIC(5,1) NOT NULL
-  ,NBA_FANTASY_PTS   NUMERIC(4,1) NOT NULL
-  primary key (Player_key)
-);
-
-go
-
-CREATE TABLE [dbo].[Users]
-(
-	 UserID INT IDENTITY(1,1) NOT NULL
-	,FirstName VARCHAR(30) 
-	,LastName VARCHAR(30) 
-	,UserName VARCHAR(30) 
-	,PasswordHash varbinary(max)
-	,PasswordSalt varbinary(max)
-	 primary key (UserID)
-);
-
-go
-
-
- CREATE TABLE [dbo].[Team]
-(
-	[TeamName] NVARCHAR(50) NOT NULL CHECK (DATALENGTH(TeamName) > 0), 
-	UserID INT NOT NULL,
-	primary key (TeamName, UserID),	
-	Foreign key (UserID) references Users
-);
-
-go
-
-CREATE TABLE [dbo].[PlayerSelection]
-(
-	[TeamName]  NVARCHAR(50),
-    [UserID] INT,
-    [Player_key]  INT,
-    primary key (TeamName,UserID,Player_key),
-    Foreign key (TeamName, UserID) references Team,
-    Foreign key (Player_key) references Player
-);
-
-go
-
+begin
 
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,1627773,'AJ Hammons','AJ','Hammons','DAL',24,22,4,18,0.182,7.4,0.8,1.9,0.405,0.2,0.5,0.5,0.4,0.9,0.45,0.4,1.3,1.6,0.2,0.5,0,0.6,0.2,1,0.6,2.2,-0.2,5.9);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,201166,'Aaron Brooks','Aaron','Brooks','IND',32,65,36,29,0.554,13.7,1.9,4.6,0.403,0.7,2,0.375,0.5,0.6,0.8,0.3,0.8,1.1,1.9,1,0.4,0.1,0.2,1.4,0.8,5,-0.5,9.7);
@@ -2693,7 +2615,14 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1630192,'Zeke Nnaji','Zeke','Nnaji','DEN',20,31,22,9,0.71,10.5,1.4,2.6,0.524,0.6,1.5,0.413,0.4,0.5,0.8,0.4,1.3,1.7,0.2,0.2,0.1,0.1,0.2,0.7,0.4,3.8,-1.5,6.5);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1629627,'Zion Williamson','Zion','Williamson','NOP',20,43,20,23,0.465,32.8,10.1,16,0.628,0.2,0.5,0.348,6,8.5,0.709,2.6,4.5,7,3.5,2.6,0.9,0.7,2,2.3,5.8,26.3,1.2,42.2);
 
+end
+
 GO
+
+if '$(insertDummyData)' = 'true'
+
+begin
+
 
 insert into Users (FirstName, LastName, UserName, PasswordHash, PasswordSalt) values
 ('Checma', 'Tokens', null, null, null),
@@ -2738,266 +2667,6 @@ insert into PlayerSelection (TeamName, UserID, Player_key) VALUES
 ('Chicago Bulls', 2, 831),
 ('Chicago Bulls', 2, 2157);
 
-GO
-
-CREATE VIEW [dbo].[allPlayers] as 
-select Player_key ,FIRSTNAME, LASTNAME ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
-FG3_PCT, FG3A, FG3M, FGA, FGM, FT_PCT, FTA, FTM, 
-W, L, W_PCT, PF, PFD, REB, TOV, STL, PTS
-from (select Player_key, player_id, Season, FIRSTNAME, LASTNAME, TEAM_ABBREVIATION ,AGE, GP, MINS, PLUS_MINUS, AST, BLK, BLKA, OREB, DREB, FG_PCT, 
-FG3_PCT, FG3A, FG3M, FGA, FGM, FT_PCT, FTA, FTM, 
-W, L, W_PCT, PF, PFD, REB, TOV, STL, PTS, RANK() over (PARTITION by PLAYER_ID order by season DESC) n
-from Player
-)m where n = 1
-
-go
-
-CREATE VIEW [dbo].[altAllPlayers] as 
-Select 
-a.player_key,
-a.FIRSTNAME, 
-a.LASTNAME,
-a.AGE, 
-a.GP, 
-a.MINS, 
-a.PLUS_MINUS, 
-a.AST, 
-a.BLK, 
-a.BLKA, 
-a.OREB, 
-a.DREB, 
-a.FG_PCT, 
-a.FG3_PCT, 
-a.FG3A, 
-a.FG3M, 
-a.FGA, 
-a.FGM, 
-a.FT_PCT, 
-a.FTA, 
-a.FTM, 
-a.W, 
-a.L, 
-a.W_PCT, 
-a.PF, 
-a.PFD, 
-a.REB, 
-a.TOV, 
-a.STL, 
-a.PTS
-from
-(
-Select
-Player_key,
-SEASON,
-PLAYER_ID,
-FIRSTNAME, 
-Lastname, 
-MAX(Player.SEASON) OVER (PARTITION BY player_id) as max_year,
-AGE, 
-GP, 
-MINS, 
-PLUS_MINUS, 
-AST, 
-BLK, 
-BLKA, 
-OREB, 
-DREB, 
-FG_PCT, 
-FG3_PCT, 
-FG3A, 
-FG3M, 
-FGA, 
-FGM, 
-FT_PCT, 
-FTA, 
-FTM, 
-W, 
-L, 
-W_PCT, 
-PF, 
-PFD, 
-REB, 
-TOV, 
-STL, 
-PTS
-from Player 
-) a
-where a.season = a.max_year 
-
-
-go
-
-CREATE VIEW [dbo].[columnHeaders] as
-
-SELECT COLUMN_NAME
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE table_name = 'allPlayers'
-AND COLUMN_NAME != 'player_key';
-
-go
-
-
-CREATE PROCEDURE [dbo].[getPlayersFromTeam]
-	@teamName nvarchar(50), @SortingCol nvarchar(50), @SortType as nvarchar(5) = 'ASC'
-
-AS
-
-BEGIN
-  
-    BEGIN TRY
-            BEGIN
-				 select *
-                 from 
-                 allPlayers a
-                 where
-                 a.Player_key in (select p.Player_key from PlayerSelection p  where p.TeamName = @teamName )
-				 ORDER BY 
-					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='ASC' THEN FIRSTNAME END ,
-					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='DESC' THEN FIRSTNAME END DESC,
-					CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='ASC' THEN LASTNAME END ,
-					CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='DESC' THEN LASTNAME END DESC,
-					CASE WHEN @SortingCol = 'AGE' AND @SortType ='ASC' THEN AGE END ,
-					CASE WHEN @SortingCol = 'AGE' AND @SortType ='DESC' THEN AGE END DESC,
-					CASE WHEN @SortingCol = 'GP' AND @SortType ='ASC' THEN GP END ,
-					CASE WHEN @SortingCol = 'GP' AND @SortType ='DESC' THEN GP END DESC,
-					CASE WHEN @SortingCol = 'MINS' AND @SortType ='ASC' THEN MINS END ,
-					CASE WHEN @SortingCol = 'MINS' AND @SortType ='DESC' THEN MINS END DESC,
-					CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='ASC' THEN PLUS_MINUS END ,
-					CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='DESC' THEN PLUS_MINUS END DESC,
-					CASE WHEN @SortingCol = 'AST' AND @SortType ='ASC' THEN AST END ,
-					CASE WHEN @SortingCol = 'AST' AND @SortType ='DESC' THEN AST END DESC,
-					CASE WHEN @SortingCol = 'BLK' AND @SortType ='ASC' THEN BLK END ,
-					CASE WHEN @SortingCol = 'BLK' AND @SortType ='DESC' THEN BLK END DESC,
-					CASE WHEN @SortingCol = 'BLKA' AND @SortType ='ASC' THEN BLKA END ,
-					CASE WHEN @SortingCol = 'BLKA' AND @SortType ='DESC' THEN BLKA END DESC,
-					CASE WHEN @SortingCol = 'OREB' AND @SortType ='ASC' THEN OREB END ,
-					CASE WHEN @SortingCol = 'OREB' AND @SortType ='DESC' THEN OREB END DESC,
-					CASE WHEN @SortingCol = 'DREB' AND @SortType ='ASC' THEN DREB END ,
-					CASE WHEN @SortingCol = 'DREB' AND @SortType ='DESC' THEN DREB END DESC,
-					CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='ASC' THEN FG_PCT END ,
-					CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='DESC' THEN FG_PCT END DESC,
-					CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='ASC' THEN FG3_PCT END ,
-					CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='DESC' THEN FG3_PCT END DESC,
-					CASE WHEN @SortingCol = 'FG3A' AND @SortType ='ASC' THEN FG3A END ,
-					CASE WHEN @SortingCol = 'FG3A' AND @SortType ='DESC' THEN FG3A END DESC,
-					CASE WHEN @SortingCol = 'FG3M' AND @SortType ='ASC' THEN FG3M END ,
-					CASE WHEN @SortingCol = 'FG3M' AND @SortType ='DESC' THEN FG3M END DESC,
-					CASE WHEN @SortingCol = 'FGA' AND @SortType ='ASC' THEN FGA END ,
-					CASE WHEN @SortingCol = 'FGA' AND @SortType ='DESC' THEN FGA END DESC,
-					CASE WHEN @SortingCol = 'FGM' AND @SortType ='ASC' THEN FGM END ,
-					CASE WHEN @SortingCol = 'FGM' AND @SortType ='DESC' THEN FGM END DESC,
-					CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='ASC' THEN FT_PCT END ,
-					CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='DESC' THEN FT_PCT END DESC,
-					CASE WHEN @SortingCol = 'FTA' AND @SortType ='ASC' THEN FTA END ,
-					CASE WHEN @SortingCol = 'FTA' AND @SortType ='DESC' THEN FTA END DESC,
-					CASE WHEN @SortingCol = 'FTM' AND @SortType ='ASC' THEN FTM END ,
-					CASE WHEN @SortingCol = 'FTM' AND @SortType ='DESC' THEN FTM END DESC,
-					CASE WHEN @SortingCol = 'W' AND @SortType ='ASC' THEN W END ,
-					CASE WHEN @SortingCol = 'W' AND @SortType ='DESC' THEN W END DESC,
-					CASE WHEN @SortingCol = 'L' AND @SortType ='ASC' THEN L END ,
-					CASE WHEN @SortingCol = 'L' AND @SortType ='DESC' THEN L END DESC,
-					CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='ASC' THEN W_PCT END ,
-					CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='DESC' THEN W_PCT END DESC,
-					CASE WHEN @SortingCol = 'PF' AND @SortType ='ASC' THEN PF END ,
-					CASE WHEN @SortingCol = 'PF' AND @SortType ='DESC' THEN PF END DESC,
-					CASE WHEN @SortingCol = 'PFD' AND @SortType ='ASC' THEN PFD END ,
-					CASE WHEN @SortingCol = 'PFD' AND @SortType ='DESC' THEN PFD END DESC,
-					CASE WHEN @SortingCol = 'REB' AND @SortType ='ASC' THEN REB END ,
-					CASE WHEN @SortingCol = 'REB' AND @SortType ='DESC' THEN REB END DESC,
-					CASE WHEN @SortingCol = 'TOV' AND @SortType ='ASC' THEN TOV END ,
-					CASE WHEN @SortingCol = 'TOV' AND @SortType ='DESC' THEN TOV END DESC,
-					CASE WHEN @SortingCol = 'STL' AND @SortType ='ASC' THEN STL END ,
-					CASE WHEN @SortingCol = 'STL' AND @SortType ='DESC' THEN STL END DESC,
-					CASE WHEN @SortingCol = 'PTS' AND @SortType ='ASC' THEN PTS END ,
-					CASE WHEN @SortingCol = 'PTS' AND @SortType ='DESC' THEN PTS END DESC
-            END
-    END TRY
-
-    BEGIN CATCH
-        DECLARE @ErrorMessage NVARCHAR(4000);  
-        DECLARE @ErrorSeverity INT;  
-        DECLARE @ErrorState INT;  
-  
-        SELECT   
-            @ErrorMessage = ERROR_MESSAGE(),  
-            @ErrorSeverity = ERROR_SEVERITY(),  
-            @ErrorState = ERROR_STATE();  
-
-            RAISERROR  (@ErrorMessage, -- Message text.  
-                        @ErrorSeverity, -- Severity.  
-                        @ErrorState -- State.  
-                       );  
-    END CATCH;
-END;
+end
 
 GO
-
-CREATE PROCEDURE ViewAllPlayers @SortingCol VARCHAR(100) ='FIRSTNAME', @SortType AS VARCHAR(100) = 'ASC'
-AS
-BEGIN
-
-SELECT * FROM allPlayers
-	ORDER BY 
-	CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='ASC' THEN FIRSTNAME END ,
-	CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='DESC' THEN FIRSTNAME END DESC,
-	CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='ASC' THEN LASTNAME END ,
-	CASE WHEN @SortingCol = 'LASTNAME' AND @SortType ='DESC' THEN LASTNAME END DESC,
-	CASE WHEN @SortingCol = 'AGE' AND @SortType ='ASC' THEN AGE END ,
-	CASE WHEN @SortingCol = 'AGE' AND @SortType ='DESC' THEN AGE END DESC,
-	CASE WHEN @SortingCol = 'GP' AND @SortType ='ASC' THEN GP END ,
-	CASE WHEN @SortingCol = 'GP' AND @SortType ='DESC' THEN GP END DESC,
-	CASE WHEN @SortingCol = 'MINS' AND @SortType ='ASC' THEN MINS END ,
-	CASE WHEN @SortingCol = 'MINS' AND @SortType ='DESC' THEN MINS END DESC,
-	CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='ASC' THEN PLUS_MINUS END ,
-	CASE WHEN @SortingCol = 'PLUS_MINUS' AND @SortType ='DESC' THEN PLUS_MINUS END DESC,
-	CASE WHEN @SortingCol = 'AST' AND @SortType ='ASC' THEN AST END ,
-	CASE WHEN @SortingCol = 'AST' AND @SortType ='DESC' THEN AST END DESC,
-	CASE WHEN @SortingCol = 'BLK' AND @SortType ='ASC' THEN BLK END ,
-	CASE WHEN @SortingCol = 'BLK' AND @SortType ='DESC' THEN BLK END DESC,
-	CASE WHEN @SortingCol = 'BLKA' AND @SortType ='ASC' THEN BLKA END ,
-	CASE WHEN @SortingCol = 'BLKA' AND @SortType ='DESC' THEN BLKA END DESC,
-	CASE WHEN @SortingCol = 'OREB' AND @SortType ='ASC' THEN OREB END ,
-	CASE WHEN @SortingCol = 'OREB' AND @SortType ='DESC' THEN OREB END DESC,
-	CASE WHEN @SortingCol = 'DREB' AND @SortType ='ASC' THEN DREB END ,
-	CASE WHEN @SortingCol = 'DREB' AND @SortType ='DESC' THEN DREB END DESC,
-	CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='ASC' THEN FG_PCT END ,
-	CASE WHEN @SortingCol = 'FG_PCT' AND @SortType ='DESC' THEN FG_PCT END DESC,
-	CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='ASC' THEN FG3_PCT END ,
-	CASE WHEN @SortingCol = 'FG3_PCT' AND @SortType ='DESC' THEN FG3_PCT END DESC,
-	CASE WHEN @SortingCol = 'FG3A' AND @SortType ='ASC' THEN FG3A END ,
-	CASE WHEN @SortingCol = 'FG3A' AND @SortType ='DESC' THEN FG3A END DESC,
-	CASE WHEN @SortingCol = 'FG3M' AND @SortType ='ASC' THEN FG3M END ,
-	CASE WHEN @SortingCol = 'FG3M' AND @SortType ='DESC' THEN FG3M END DESC,
-	CASE WHEN @SortingCol = 'FGA' AND @SortType ='ASC' THEN FGA END ,
-	CASE WHEN @SortingCol = 'FGA' AND @SortType ='DESC' THEN FGA END DESC,
-	CASE WHEN @SortingCol = 'FGM' AND @SortType ='ASC' THEN FGM END ,
-	CASE WHEN @SortingCol = 'FGM' AND @SortType ='DESC' THEN FGM END DESC,
-	CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='ASC' THEN FT_PCT END ,
-	CASE WHEN @SortingCol = 'FT_PCT' AND @SortType ='DESC' THEN FT_PCT END DESC,
-	CASE WHEN @SortingCol = 'FTA' AND @SortType ='ASC' THEN FTA END ,
-	CASE WHEN @SortingCol = 'FTA' AND @SortType ='DESC' THEN FTA END DESC,
-	CASE WHEN @SortingCol = 'FTM' AND @SortType ='ASC' THEN FTM END ,
-	CASE WHEN @SortingCol = 'FTM' AND @SortType ='DESC' THEN FTM END DESC,
-	CASE WHEN @SortingCol = 'W' AND @SortType ='ASC' THEN W END ,
-	CASE WHEN @SortingCol = 'W' AND @SortType ='DESC' THEN W END DESC,
-	CASE WHEN @SortingCol = 'L' AND @SortType ='ASC' THEN L END ,
-	CASE WHEN @SortingCol = 'L' AND @SortType ='DESC' THEN L END DESC,
-	CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='ASC' THEN W_PCT END ,
-	CASE WHEN @SortingCol = 'W_PCT' AND @SortType ='DESC' THEN W_PCT END DESC,
-	CASE WHEN @SortingCol = 'PF' AND @SortType ='ASC' THEN PF END ,
-	CASE WHEN @SortingCol = 'PF' AND @SortType ='DESC' THEN PF END DESC,
-	CASE WHEN @SortingCol = 'PFD' AND @SortType ='ASC' THEN PFD END ,
-	CASE WHEN @SortingCol = 'PFD' AND @SortType ='DESC' THEN PFD END DESC,
-	CASE WHEN @SortingCol = 'REB' AND @SortType ='ASC' THEN REB END ,
-	CASE WHEN @SortingCol = 'REB' AND @SortType ='DESC' THEN REB END DESC,
-	CASE WHEN @SortingCol = 'TOV' AND @SortType ='ASC' THEN TOV END ,
-	CASE WHEN @SortingCol = 'TOV' AND @SortType ='DESC' THEN TOV END DESC,
-	CASE WHEN @SortingCol = 'STL' AND @SortType ='ASC' THEN STL END ,
-	CASE WHEN @SortingCol = 'STL' AND @SortType ='DESC' THEN STL END DESC,
-	CASE WHEN @SortingCol = 'PTS' AND @SortType ='ASC' THEN PTS END ,
-	CASE WHEN @SortingCol = 'PTS' AND @SortType ='DESC' THEN PTS END DESC
-
-	
-	END
-
-go
