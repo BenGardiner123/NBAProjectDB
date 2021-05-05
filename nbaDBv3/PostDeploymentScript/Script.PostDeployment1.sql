@@ -9,7 +9,7 @@
 ----               SELECT * FROM [$(TableName)]					
 ------------------------------------------------------------------------------------------
 
-if '$(ClearDB)' = 'true' or '$(ReLoad_TestData)' = 'true'
+if '$(ClearDB)' = 'true' or '$(ReLoad_PlayerData)' = 'true'
 	
 	begin
 		delete from PlayerSelection;
@@ -20,10 +20,11 @@ if '$(ClearDB)' = 'true' or '$(ReLoad_TestData)' = 'true'
 
 GO
 
-if '$(ReLoad_TestData)' = 'true'
+if '$(ReLoad_PlayerData)' = 'true'
 
 begin
 
+DBCC CHECKIDENT ('Player', RESEED, 0) 
 
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,1627773,'AJ Hammons','AJ','Hammons','DAL',24,22,4,18,0.182,7.4,0.8,1.9,0.405,0.2,0.5,0.5,0.4,0.9,0.45,0.4,1.3,1.6,0.2,0.5,0,0.6,0.2,1,0.6,2.2,-0.2,5.9);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,201166,'Aaron Brooks','Aaron','Brooks','IND',32,65,36,29,0.554,13.7,1.9,4.6,0.403,0.7,2,0.375,0.5,0.6,0.8,0.3,0.8,1.1,1.9,1,0.4,0.1,0.2,1.4,0.8,5,-0.5,9.7);
@@ -2623,9 +2624,13 @@ GO
 
 if '$(insertFakeUserData)' = 'true'
 
-begin
 
-DBCC CHECKIDENT ('Users', RESEED, 1) 
+DBCC CHECKIDENT ('Users', RESEED, 0) 
+
+GO
+
+
+begin
 
 insert into Users (FirstName, LastName, UserName, PasswordHash, PasswordSalt) values
 ('Checma', 'Tokens', null, null, null),
