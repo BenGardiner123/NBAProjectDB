@@ -1,6 +1,6 @@
 ﻿--drop view if exists altAllPlayers; 
 --drop view if exists allPlayers;
-
+--deployed this localley
 
 ----------------------------------------------------------------
 --looking at the algo for the allplayers join on playerselection
