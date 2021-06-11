@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Users]
 (
-	UserID INT IDENTITY(1,1)
-	primary key (UserID)
+	UserName NVARCHAR (50) NOT NULL,
+	primary key (UserName)
 );

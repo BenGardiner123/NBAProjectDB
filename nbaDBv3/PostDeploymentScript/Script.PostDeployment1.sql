@@ -2622,58 +2622,5 @@ end
 
 GO
 
-if '$(insertFakeUserData)' = 'true'
 
 
-DBCC CHECKIDENT ('Users', RESEED, 0) 
-
-GO
-
-
-begin
-
-insert into Users (FirstName, LastName, UserName, PasswordHash, PasswordSalt) values
-('Checma', 'Tokens', null, null, null),
-('Scores', 'ontheBoard', null, null, null);
-
-
-insert into Team (TeamName, UserID)values
-('Miami Heat', 1),
-('Chicago Bulls', 2);
-
-
-insert into PlayerSelection (TeamName, UserID, Player_key) VALUES
-('Miami Heat', 1, 2065),
-('Miami Heat', 1, 1158),
-('Miami Heat', 1, 374),
-('Miami Heat', 1, 717),
-('Miami Heat', 1, 326),
-('Miami Heat', 1, 831),
-('Miami Heat', 1, 334),
-('Miami Heat', 1, 1774),
-('Miami Heat', 1, 2060),
-('Miami Heat', 1, 1433),
-('Miami Heat', 1, 1760),
-('Miami Heat', 1, 702),
-('Miami Heat', 1, 975),
-('Miami Heat', 1, 409),
-('Miami Heat', 1, 41),
-('Chicago Bulls', 2, 494),
-('Chicago Bulls', 2, 765),
-('Chicago Bulls', 2, 1760),
-('Chicago Bulls', 2, 409),
-('Chicago Bulls', 2, 326),
-('Chicago Bulls', 2, 41),
-('Chicago Bulls', 2, 51),
-('Chicago Bulls', 2, 1774),
-('Chicago Bulls', 2, 2060),
-('Chicago Bulls', 2, 2557),
-('Chicago Bulls', 2, 1093),
-('Chicago Bulls', 2, 702),
-('Chicago Bulls', 2, 975),
-('Chicago Bulls', 2, 831),
-('Chicago Bulls', 2, 2157);
-
-end
-
-GO
