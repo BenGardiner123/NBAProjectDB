@@ -1,30 +1,21 @@
-﻿----/*
-----Post-Deployment Script Template							
-------------------------------------------------------------------------------------------
----- This file contains SQL statements that will be appended to the build script.		
----- Use SQLCMD syntax to include a file in the post-deployment script.			
----- Example:      :r .\myfile.sql								
----- Use SQLCMD syntax to reference a variable in the post-deployment script.		
----- Example:      :setvar TableName MyTable							
-----               SELECT * FROM [$(TableName)]					
-------------------------------------------------------------------------------------------
+﻿/*
+Post-Deployment Script Template							
+--------------------------------------------------------------------------------------
+ This file contains SQL statements that will be appended to the build script.		
+ Use SQLCMD syntax to include a file in the post-deployment script.			
+ Example:      :r .\myfile.sql								
+ Use SQLCMD syntax to reference a variable in the post-deployment script.		
+ Example:      :setvar TableName MyTable							
+               SELECT * FROM [$(TableName)]					
+--------------------------------------------------------------------------------------
+*/
 
-if '$(ClearDB)' = 'true' or '$(ReLoad_PlayerData)' = 'true'
-	
-	begin
-		delete from PlayerSelection;
-		delete from Team;
-		delete from Player;
-		delete from Users;
-	end
+delete from PlayerSelection;
+delete from Team;
+delete from Player;
+delete from Users;
 
 GO
-
-if '$(ReLoad_PlayerData)' = 'true'
-
-begin
-
-DBCC CHECKIDENT ('Player', RESEED, 0) 
 
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,1627773,'AJ Hammons','AJ','Hammons','DAL',24,22,4,18,0.182,7.4,0.8,1.9,0.405,0.2,0.5,0.5,0.4,0.9,0.45,0.4,1.3,1.6,0.2,0.5,0,0.6,0.2,1,0.6,2.2,-0.2,5.9);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (201617,201166,'Aaron Brooks','Aaron','Brooks','IND',32,65,36,29,0.554,13.7,1.9,4.6,0.403,0.7,2,0.375,0.5,0.6,0.8,0.3,0.8,1.1,1.9,1,0.4,0.1,0.2,1.4,0.8,5,-0.5,9.7);
@@ -2617,10 +2608,3 @@ INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIA
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,203897,'Zach LaVine','Zach','LaVine','CHI',26,44,19,25,0.432,35.1,10,19.2,0.518,3.5,8,0.433,4.5,5.2,0.868,0.6,4.4,5,4.8,3.8,0.9,0.5,1,2.4,4,27.9,-0.9,41.3);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1630192,'Zeke Nnaji','Zeke','Nnaji','DEN',20,31,22,9,0.71,10.5,1.4,2.6,0.524,0.6,1.5,0.413,0.4,0.5,0.8,0.4,1.3,1.7,0.2,0.2,0.1,0.1,0.2,0.7,0.4,3.8,-1.5,6.5);
 INSERT INTO Player(SEASON,PLAYER_ID,PLAYER_NAME,FIRSTNAME,LASTNAME,TEAM_ABBREVIATION,AGE,GP,W,L,W_PCT,MINS,FGM,FGA,FG_PCT,FG3M,FG3A,FG3_PCT,FTM,FTA,FT_PCT,OREB,DREB,REB,AST,TOV,STL,BLK,BLKA,PF,PFD,PTS,PLUS_MINUS,NBA_FANTASY_PTS) VALUES (202021,1629627,'Zion Williamson','Zion','Williamson','NOP',20,43,20,23,0.465,32.8,10.1,16,0.628,0.2,0.5,0.348,6,8.5,0.709,2.6,4.5,7,3.5,2.6,0.9,0.7,2,2.3,5.8,26.3,1.2,42.2);
-
-end
-
-GO
-
-
-

@@ -67,7 +67,6 @@
     <Build Include="Views\allPlayers.sql" />
     <None Include="Views\altAllPlayers.sql" />
     <None Include="Views\columnHeaderViews.sql" />
-    <None Include="Data\addPlayerData.sql" />
     <Build Include="Tables\Users.sql" />
   </ItemGroup>
   <ItemGroup>

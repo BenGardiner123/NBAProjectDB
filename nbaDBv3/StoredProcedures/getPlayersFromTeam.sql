@@ -13,7 +13,7 @@ BEGIN
                 FROM	
                 allPlayers A
                 where
-                A.Player_key in (SELECT p.Player_key FROM PlayerSelection p  WHERE p.TeamName = @teamName)
+                A.PLAYER_ID in (SELECT p.PLAYER_ID FROM PlayerSelection p  WHERE p.TeamName = @teamName)
 				ORDER BY 
 					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='ASC' THEN FIRSTNAME END ,
 					CASE WHEN @SortingCol = 'FIRSTNAME' AND @SortType ='DESC' THEN FIRSTNAME END DESC,
